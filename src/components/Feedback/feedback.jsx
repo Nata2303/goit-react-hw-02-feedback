@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Section from './Feedback/section';
-import FeedbackOptions from './Feedback/feedbackOptions';
-import Statistics from './Feedback/statistics';
-import Notification from './Feedback/notification';
+import Section from './Section';
+import FeedbackOptions from './FeedbackOptions';
+import Statistics from './Statistics';
+import Notification from './notification';
 
-export const App = () => {
+const Feedback = () => {
   const [feedback, setFeedback] = useState({ good: 0, neutral: 0, bad: 0 });
 
   const handleFeedback = type => {
@@ -14,10 +14,20 @@ export const App = () => {
     }));
   };
 
+  const countTotalFeedback = () => {
+    const { good, neutral, bad } = feedback;
+    return good + neutral + bad;
+  };
+
+  const countPositiveFeedbackPercentage = () => {
+    const { good } = feedback;
+    const total = countTotalFeedback();
+    return total > 0 ? Math.round((good / total) * 100) : 0;
+  };
+
   const { good, neutral, bad } = feedback;
-  const totalFeedback = good + neutral + bad;
-  const positivePercentage =
-    totalFeedback > 0 ? Math.round((good / totalFeedback) * 100) : 0;
+  const totalFeedback = countTotalFeedback();
+  const positivePercentage = countPositiveFeedbackPercentage();
 
   return (
     <div>
@@ -44,3 +54,5 @@ export const App = () => {
     </div>
   );
 };
+
+export default Feedback;
